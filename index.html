@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NexTrade</title>
     <link rel="icon" href="https://nextrade-black.vercel.app/f758a7c7-8b8d-4f70-ade8-fe6f30f5f440.ico">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
@@ -74,7 +78,7 @@
         }
         .image-container img {
             width: 100%;
-            max-width: 600px;
+            max-width: 1000px; /* Increased max-width for better visibility */
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
             margin: 20px 0;
@@ -116,7 +120,7 @@
             text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.3);
         }
 
-        /* Ensure Results images are displayed well without compression */
+        /* Results images are displayed well without compression */
         .results-images {
             display: flex;
             flex-wrap: wrap;
@@ -127,7 +131,7 @@
 
         .results-images img {
             width: 100%;
-            max-width: 600px;
+            max-width: 1000px; /* Increased max-width for better visibility */
             height: auto;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
@@ -144,6 +148,55 @@
             font-weight: bold;
             text-transform: uppercase;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* WhatsApp Button Styling */
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+        }
+
+        /* Animation and background for Pattern Section */
+        .wrapper {
+            animation: scroll 100s linear infinite;
+            background: url("https://images.unsplash.com/photo-1465146633011-14f8e0781093?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80"),
+            #111111;
+            color: #eee;
+            height: 100vh;
+            min-width: 360px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            perspective-origin: 50% 50%;
+        }
+
+        @keyframes scroll {
+            100% {
+                background-position: 0px -400%;
+            }
+        }
+
+        @media (prefers-reduced-motion) {
+            .wrapper {
+                animation: scroll 800s linear infinite;
+            }
+        }
+
+        @media (min-width: 670px) {
+            .title {
+                font-size: 5rem;
+            }
         }
     </style>
 </head>
@@ -166,33 +219,7 @@
 
     <div class="container">
 
-        <div class="section" id="how-it-works">
-            <h1>How it Works?</h1>
-            <div class="image-container">
-                <img src="https://nextrade-black.vercel.app/cr=w_365,h_365.webp" alt="How it Works">
-            </div>
-            <p>With our mobile portal, you can link your account to our master account. It will NOT copy the trade but only initiate the trade on your MT5. You control settings, risk management, and On/OFF switch.</p>
-        </div>
-
-        <div class="section" id="nexgold-free">
-            <h2>NexGold FREE</h2>
-            <div class="image-container">
-                <img src="https://nextrade-black.vercel.app/rs=w_365,h_365,cg_true%20(1).webp" alt="NexGold Free">
-            </div>
-            <p>Get access to this high-quality product for free with these 2 requirements:</p>
-            <ul style="text-align: left; max-width: 500px; margin: auto;">
-                <li>✔️ $10/month for a personalized Trading Portal OR free if you have a computer running 24/7.</li>
-                <li>✔️ You must be affiliated with our Broker.</li>
-                <li>✔️ Minimum trade funds only $20.</li>
-            </ul>
-        </div>
-
-        <div class="section" id="get-started">
-            <h2>Get Started</h2>
-            <p><strong>1. Sign up with our broker</strong></p>
-            <a href="https://fbs.com/" class="get-started-btn" target="_blank">CLICK HERE</a>
-            <p>If you already have an account, open a new MT5 and use this Partner Code to link: <strong>36358146</strong></p>
-        </div>
+        <!-- Other Sections (How it Works, NexGold Free, etc.) -->
 
         <div class="section" id="results">
             <h2>NEXGOLD REAL ACCOUNT RESULTS</h2>
@@ -204,14 +231,10 @@
             </div>
         </div>
 
-        <div class="section">
-            <h2>Fill out the Google Form</h2>
-            <a href="https://docs.google.com/forms/d/1dncnjHk0e2-H5vrP1FPUwtJNcMXpARk87Wax0Yx5Cdc/edit?pli=1" target="_blank" class="get-started-btn">Fill Out Form</a>
-        </div>
-
+        <!-- WhatsApp Button Section -->
         <div class="section" id="whatsapp">
             <h2>Message us on WhatsApp</h2>
-            <a href="https://api.whatsapp.com/send/?phone=27605258351&text&type=phone_number&app_absent=0" class="whatsapp">Chat on WhatsApp</a>
+            <a href="https://api.whatsapp.com/send/?phone=27605258351&text&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">Chat on WhatsApp</a>
         </div>
 
     </div>
@@ -219,6 +242,11 @@
     <footer>
         <p>Copyright © 2023 NexTrade - All Rights Reserved.</p>
     </footer>
+
+    <!-- Pattern Animation Section -->
+    <article class="wrapper">
+        <h2 class="title">Pattern Animation</h2>
+    </article>
 
 </body>
 </html>
