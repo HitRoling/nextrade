@@ -79,76 +79,6 @@
             box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
             margin: 20px 0;
         }
-        .form-container {
-            max-width: 500px;
-            margin: auto;
-            text-align: left;
-        }
-        form input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            font-size: 16px;
-            outline: none;
-        }
-        form input[type="submit"] {
-            background: #ff9800;
-            color: white;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-        }
-        .whatsapp {
-            background: #25D366;
-            color: white;
-            padding: 15px;
-            display: inline-block;
-            border-radius: 5px;
-            font-size: 18px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-        }
-        footer {
-            background: #333;
-            color: white;
-            padding: 20px;
-            margin-top: 30px;
-            text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.3);
-        }
-
-        /* Full background photo with parallax effect */
-        body {
-            background: #1A1A1A;
-            margin: 0;
-            padding: 0;
-        }
-
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://nextrade-black.vercel.app/Chart.PNG');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            z-index: -1;
-            transform: scale(1.2);
-            transition: transform 0.5s ease-out;
-        }
-
-        .background.scrolled {
-            transform: scale(1);
-        }
-
-        /* Make the "Get Started" Button work */
         .get-started-btn {
             background-color: #ff9800;
             color: white;
@@ -160,11 +90,46 @@
             text-transform: uppercase;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
-
         .get-started-btn:hover {
             background-color: #e68900;
         }
 
+        /* Full background photo with no zoom effect */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://nextrade-black.vercel.app/Chart.PNG');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: -1;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            padding: 20px;
+            margin-top: 30px;
+            text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Ensure Results images are visible */
+        .results-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .results-images img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -216,34 +181,17 @@
 
         <div class="section" id="results">
             <h2>NEXGOLD REAL ACCOUNT RESULTS</h2>
-            <div class="image-container">
+            <div class="results-images">
                 <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Trades.JPG/:/rs=w:1300,h:800" alt="Result 1">
+                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Capture.JPG/:/rs=w:1300,h:800" alt="Result 2">
+                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/ne1xgold.JPG/:/rs=w:1300,h:800" alt="Result 3">
+                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/info.JPG/:/rs=w:1300,h:800" alt="Result 4">
             </div>
-
-            <div class="results-nav">
-                <button onclick="document.getElementById('result-img').src='https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Capture.JPG/:/rs=w:1300,h:800'">Result 1</button>
-                <button onclick="document.getElementById('result-img').src='https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/ne1xgold.JPG/:/rs=w:1300,h:800'">Result 2</button>
-                <button onclick="document.getElementById('result-img').src='https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/info.JPG/:/rs=w:1300,h:800'">Result 3</button>
-            </div>
-
-            <div class="image-container">
-                <img id="result-img" src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Trades.JPG/:/rs=w:1300,h:800" alt="Result Image">
-            </div>
-
         </div>
 
         <div class="section">
-            <h2>Fill out this form to get your free bot</h2>
-            <div class="form-container">
-                <form action="YOUR_FORM_ACTION_URL" method="POST">
-                    <input type="text" name="name" placeholder="Name" required>
-                    <input type="text" name="phone" placeholder="Phone Number*" required>
-                    <input type="email" name="email" placeholder="Email*" required>
-                    <input type="text" name="mt5_account" placeholder="Please enter your affiliated FBS MT5 account number" required>
-                    <input type="text" name="version" placeholder="Please state Mobile or Pc version" required>
-                    <input type="submit" value="Send">
-                </form>
-            </div>
+            <h2>Fill out the Google Form</h2>
+            <a href="https://docs.google.com/forms/d/1dncnjHk0e2-H5vrP1FPUwtJNcMXpARk87Wax0Yx5Cdc/edit?pli=1" target="_blank" class="get-started-btn">Fill Out Form</a>
         </div>
 
         <div class="section" id="whatsapp">
@@ -256,17 +204,6 @@
     <footer>
         <p>Copyright © 2023 NexTrade - All Rights Reserved.</p>
     </footer>
-
-    <script>
-        window.addEventListener('scroll', function() {
-            let background = document.querySelector('.background');
-            if (window.scrollY > 50) {
-                background.classList.add('scrolled');
-            } else {
-                background.classList.remove('scrolled');
-            }
-        });
-    </script>
 
 </body>
 </html>
