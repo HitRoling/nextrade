@@ -78,13 +78,6 @@
             box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
             margin: 20px 0;
         }
-        .chart-container {
-            margin: 40px 0;
-        }
-        .chart-container img {
-            max-width: 100%;
-            border-radius: 10px;
-        }
         .form-container {
             max-width: 500px;
             margin: auto;
@@ -127,6 +120,25 @@
             margin-top: 30px;
             text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.3);
         }
+
+        /* Fix the vertical photo to the sides */
+        .vertical-photo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: auto;
+            z-index: -1;
+        }
+        .vertical-photo-right {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: auto;
+            z-index: -1;
+        }
+
         .results-nav {
             display: flex;
             justify-content: center;
@@ -145,34 +157,6 @@
         }
         .results-nav button:hover {
             background: #e68900;
-        }
-        .candle-symbols {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .candle-symbols img {
-            width: 50px;
-            height: 50px;
-            margin: 0 10px;
-        }
-
-        /* Fix the vertical photo to the sides */
-        .vertical-photo {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100px;
-            height: auto;
-            z-index: -1;
-        }
-        .vertical-photo-right {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: auto;
-            z-index: -1;
         }
 
     </style>
@@ -237,10 +221,6 @@
                 <img id="result-img" src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Trades.JPG/:/rs=w:1300,h:800" alt="Result Image">
             </div>
 
-            <div class="candle-symbols">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Candlestick-patterns-3.png" alt="Candlestick" title="Candlestick">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Candlestick-patterns-3.png" alt="Candlestick" title="Candlestick">
-            </div>
         </div>
 
         <div class="section">
