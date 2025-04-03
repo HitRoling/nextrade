@@ -179,6 +179,34 @@
             font-weight: bold;
             cursor: pointer;
         }
+
+        /* Form Section */
+        .form-section {
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #333;
+            background-color: #222;
+            color: white;
+        }
+
+        input[type="submit"] {
+            background-color: #ff9800;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #e68900;
+        }
     </style>
 </head>
 <body>
@@ -228,6 +256,17 @@
             <p>2. Fill out the form below</p>
 
             <p>3. Once approved you will get a link to proceed to your portal setup.</p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <h2>Fill out the form</h2>
+            <form action="https://docs.google.com/forms/d/1dncnjHk0e2-H5vrP1FPUwtJNcMXpARk87Wax0Yx5Cdc/edit" method="get" target="_blank">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                <input type="submit" value="Submit">
+            </form>
         </div>
 
         <!-- Results Section -->
