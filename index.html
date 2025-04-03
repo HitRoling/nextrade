@@ -13,18 +13,39 @@
         }
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #000428, #004e92);
+            background: #1A1A1A;
             color: #fff;
             text-align: center;
+            line-height: 1.6;
         }
         header {
-            background: #000;
+            background: linear-gradient(135deg, #1A1A1A 0%, #414242 100%);
             padding: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
         header img {
             width: 100%;
             max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #333;
+            padding: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            transition: background 0.3s ease;
+        }
+        nav a:hover {
+            background: #ff9800;
+            border-radius: 5px;
         }
         .container {
             width: 90%;
@@ -52,10 +73,17 @@
         }
         .image-container img {
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
             margin: 20px 0;
+        }
+        .chart-container {
+            margin: 40px 0;
+        }
+        .chart-container img {
+            max-width: 100%;
+            border-radius: 10px;
         }
         .form-container {
             max-width: 500px;
@@ -93,11 +121,30 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         }
         footer {
-            background: #000;
+            background: #333;
             color: white;
             padding: 20px;
             margin-top: 30px;
             text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.3);
+        }
+        .results-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .results-nav button {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .results-nav button:hover {
+            background: #e68900;
         }
     </style>
 </head>
@@ -107,24 +154,25 @@
         <img src="https://nextrade-black.vercel.app/Capture.PNG" alt="Banner">
     </header>
 
+    <nav>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#nexgold-free">NexGold Free</a>
+        <a href="#get-started">Get Started</a>
+        <a href="#results">Results</a>
+        <a href="#whatsapp">WhatsApp</a>
+    </nav>
+
     <div class="container">
 
-        <div class="section">
-            <h1>Maximize Your Trading Potential</h1>
-            <p>Trade smarter with our innovative mobile trading system.</p>
-            <h2>NexGold trades only GOLD.</h2>
-            <p><strong>ONLY for $10/month</strong></p>
-        </div>
-
-        <div class="section">
-            <h2>How it Works?</h2>
+        <div class="section" id="how-it-works">
+            <h1>How it Works?</h1>
             <div class="image-container">
                 <img src="https://nextrade-black.vercel.app/cr=w_365,h_365.webp" alt="How it Works">
             </div>
             <p>With our mobile portal, you can link your account to our master account. It will NOT copy the trade but only initiate the trade on your MT5. You control settings, risk management, and On/OFF switch.</p>
         </div>
 
-        <div class="section">
+        <div class="section" id="nexgold-free">
             <h2>NexGold FREE</h2>
             <div class="image-container">
                 <img src="https://nextrade-black.vercel.app/rs=w_365,h_365,cg_true%20(1).webp" alt="NexGold Free">
@@ -137,32 +185,31 @@
             </ul>
         </div>
 
-        <div class="section">
+        <div class="section" id="get-started">
             <h2>Get Started</h2>
-            <div class="image-container">
-                <img src="https://nextrade-black.vercel.app/rs=w_365,h_365,cg_true%20(1).webp" alt="Get Started">
-            </div>
             <p><strong>1. Sign up with our broker</strong></p>
             <p>CLICK HERE</p>
             <p>If you already have an account, open a new MT5 and use this Partner Code to link: <strong>36358146</strong></p>
         </div>
 
-        <div class="section">
-            <h2>Fill out this form to get your free bot</h2>
-            <div class="form-container">
-                <form>
-                    <input type="text" name="name" placeholder="Name" required>
-                    <input type="tel" name="phone" placeholder="Phone Number*" required>
-                    <input type="email" name="email" placeholder="Email*" required>
-                    <input type="text" name="mt5_account" placeholder="FBS MT5 Account Number" required>
-                    <input type="text" name="version" placeholder="Mobile or PC version" required>
-                    <input type="submit" value="Send">
-                </form>
+        <div class="section" id="results">
+            <h2>NEXGOLD REAL ACCOUNT RESULTS</h2>
+            <div class="image-container">
+                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Trades.JPG/:/rs=w:1300,h:800" alt="Result 1">
             </div>
-            <p>This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</p>
+
+            <div class="results-nav">
+                <button onclick="document.getElementById('result-img').src='https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Capture.JPG/:/rs=w:1300,h:800'">Result 1</button>
+                <button onclick="document.getElementById('result-img').src='https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/ne1xgold.JPG/:/rs=w:1300,h:800'">Result 2</button>
+                <button onclick="document.getElementById('result-img').src='https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/info.JPG/:/rs=w:1300,h:800'">Result 3</button>
+            </div>
+
+            <div class="image-container">
+                <img id="result-img" src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Trades.JPG/:/rs=w:1300,h:800" alt="Result Image">
+            </div>
         </div>
 
-        <div class="section">
+        <div class="section" id="whatsapp">
             <h2>Message us on WhatsApp</h2>
             <a href="https://api.whatsapp.com/send/?phone=27605258351&text&type=phone_number&app_absent=0" class="whatsapp">Chat on WhatsApp</a>
         </div>
