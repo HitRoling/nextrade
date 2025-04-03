@@ -94,7 +94,7 @@
             background-color: #e68900;
         }
 
-        /* Full background photo with no zoom effect */
+        /* Full background photo with scroll effect */
         .background {
             position: fixed;
             top: 0;
@@ -116,19 +116,34 @@
             text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.3);
         }
 
-        /* Ensure Results images are visible */
+        /* Ensure Results images are displayed well without compression */
         .results-images {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
+            margin-top: 20px;
         }
 
         .results-images img {
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
+            height: auto;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Adjust Button to open broker link */
+        .get-started-btn {
+            background-color: #ff9800;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -175,7 +190,7 @@
         <div class="section" id="get-started">
             <h2>Get Started</h2>
             <p><strong>1. Sign up with our broker</strong></p>
-            <a href="https://www.yourbrokerlink.com" class="get-started-btn" target="_blank">CLICK HERE</a>
+            <a href="https://fbs.com/" class="get-started-btn" target="_blank">CLICK HERE</a>
             <p>If you already have an account, open a new MT5 and use this Partner Code to link: <strong>36358146</strong></p>
         </div>
 
