@@ -156,6 +156,25 @@
             height: 50px;
             margin: 0 10px;
         }
+
+        /* Fix the vertical photo to the sides */
+        .vertical-photo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: auto;
+            z-index: -1;
+        }
+        .vertical-photo-right {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: auto;
+            z-index: -1;
+        }
+
     </style>
 </head>
 <body>
@@ -243,16 +262,15 @@
             <a href="https://api.whatsapp.com/send/?phone=27605258351&text&type=phone_number&app_absent=0" class="whatsapp">Chat on WhatsApp</a>
         </div>
 
-        <div class="section">
-            <h2>Disclaimer</h2>
-            <p>NexGold is not a financial advisor. Trading carries risks, and you should only trade with funds you can afford to lose.</p>
-        </div>
-
     </div>
 
     <footer>
         <p>Copyright © 2023 NexTrade - All Rights Reserved.</p>
     </footer>
+
+    <!-- Vertical photos on both sides -->
+    <img class="vertical-photo" src="https://nextrade-black.vercel.app/Chart.PNG" alt="Chart Left">
+    <img class="vertical-photo-right" src="https://nextrade-black.vercel.app/Chart.PNG" alt="Chart Right">
 
 </body>
 </html>
