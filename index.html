@@ -13,10 +13,11 @@
         }
         body {
             font-family: 'Arial', sans-serif;
-            background: #1A1A1A;
             color: #fff;
             text-align: center;
             line-height: 1.6;
+            background: #1A1A1A;
+            overflow-x: hidden;
         }
         header {
             background: linear-gradient(135deg, #1A1A1A 0%, #414242 100%);
@@ -121,7 +122,15 @@
             text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.3);
         }
 
-        /* Fix the vertical photo to the sides */
+        /* Full background photo */
+        body {
+            background-image: url('https://nextrade-black.vercel.app/Chart.PNG');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+
         .vertical-photo {
             position: fixed;
             top: 0;
@@ -137,26 +146,6 @@
             width: 100px;
             height: auto;
             z-index: -1;
-        }
-
-        .results-nav {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .results-nav button {
-            background: #ff9800;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s ease;
-        }
-        .results-nav button:hover {
-            background: #e68900;
         }
 
     </style>
@@ -247,10 +236,6 @@
     <footer>
         <p>Copyright © 2023 NexTrade - All Rights Reserved.</p>
     </footer>
-
-    <!-- Vertical photos on both sides -->
-    <img class="vertical-photo" src="https://nextrade-black.vercel.app/Chart.PNG" alt="Chart Left">
-    <img class="vertical-photo-right" src="https://nextrade-black.vercel.app/Chart.PNG" alt="Chart Right">
 
 </body>
 </html>
