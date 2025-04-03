@@ -76,13 +76,6 @@
             color: #ddd;
             margin-bottom: 20px;
         }
-        .image-container img {
-            width: 100%;
-            max-width: 1000px; /* Increased max-width for better visibility */
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
-            margin: 20px 0;
-        }
         .get-started-btn {
             background-color: #ff9800;
             color: white;
@@ -105,7 +98,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://nextrade-black.vercel.app/Chart.PNG');
+            background-image: url('https://images.unsplash.com/photo-1465146633011-14f8e0781093?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -120,34 +113,26 @@
             text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.3);
         }
 
-        /* Results images are displayed well without compression */
+        /* Results images with small size */
         .results-images {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin-top: 20px;
         }
 
         .results-images img {
-            width: 100%;
-            max-width: 1000px; /* Increased max-width for better visibility */
+            width: 300px;  /* Adjusted for smaller view */
             height: auto;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
         }
 
-        /* Adjust Button to open broker link */
-        .get-started-btn {
-            background-color: #ff9800;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 20px;
-            font-weight: bold;
-            text-transform: uppercase;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        .results-images img:hover {
+            transform: scale(1.05);
         }
 
         /* WhatsApp Button Styling */
@@ -165,38 +150,34 @@
             background-color: #128C7E;
         }
 
-        /* Animation and background for Pattern Section */
-        .wrapper {
-            animation: scroll 100s linear infinite;
-            background: url("https://images.unsplash.com/photo-1465146633011-14f8e0781093?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80"),
-            #111111;
-            color: #eee;
-            height: 100vh;
-            min-width: 360px;
+        /* Full-screen image modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
             width: 100%;
-            display: flex;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
             justify-content: center;
             align-items: center;
-            perspective: 1000px;
-            perspective-origin: 50% 50%;
         }
 
-        @keyframes scroll {
-            100% {
-                background-position: 0px -400%;
-            }
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
         }
 
-        @media (prefers-reduced-motion) {
-            .wrapper {
-                animation: scroll 800s linear infinite;
-            }
-        }
-
-        @media (min-width: 670px) {
-            .title {
-                font-size: 5rem;
-            }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -224,10 +205,10 @@
         <div class="section" id="results">
             <h2>NEXGOLD REAL ACCOUNT RESULTS</h2>
             <div class="results-images">
-                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Trades.JPG/:/rs=w:1300,h:800" alt="Result 1">
-                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Capture.JPG/:/rs=w:1300,h:800" alt="Result 2">
-                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/ne1xgold.JPG/:/rs=w:1300,h:800" alt="Result 3">
-                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/info.JPG/:/rs=w:1300,h:800" alt="Result 4">
+                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Trades.JPG/:/rs=w:1300,h:800" alt="Result 1" onclick="openModal(this)">
+                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Capture.JPG/:/rs=w:1300,h:800" alt="Result 2" onclick="openModal(this)">
+                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/ne1xgold.JPG/:/rs=w:1300,h:800" alt="Result 3" onclick="openModal(this)">
+                <img src="https://img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/info.JPG/:/rs=w:1300,h:800" alt="Result 4" onclick="openModal(this)">
             </div>
         </div>
 
@@ -243,10 +224,25 @@
         <p>Copyright © 2023 NexTrade - All Rights Reserved.</p>
     </footer>
 
-    <!-- Pattern Animation Section -->
-    <article class="wrapper">
-        <h2 class="title">Pattern Animation</h2>
-    </article>
+    <!-- Full-Screen Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img id="modalImage" src="" alt="Full Screen Image">
+    </div>
+
+    <script>
+        function openModal(img) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = "flex";
+            modalImg.src = img.src;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = "none";
+        }
+    </script>
 
 </body>
 </html>
