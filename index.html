@@ -6,58 +6,105 @@
     <title>NexTrade - Maximize Your Trading Potential</title>
     <link rel="icon" href="https://nextrade-black.vercel.app/f758a7c7-8b8d-4f70-ade8-fe6f30f5f440.ico">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
             text-align: center;
         }
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: white;
+        header {
+            background: #222;
+            color: white;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        img {
-            width: 100%;
+        header img {
+            max-width: 100%;
             height: auto;
-            border-radius: 10px;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
         }
         .section {
-            margin: 40px 0;
-            padding: 20px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: left;
+            padding: 50px 20px;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
-        h2 {
+        h1, h2 {
             color: #333;
         }
         p, ul {
             color: #555;
-            font-size: 16px;
+            font-size: 18px;
         }
         ul {
-            padding-left: 20px;
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 5px 0;
+        }
+        .image-container {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+        .image-container img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+            text-align: left;
+        }
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form input[type="submit"] {
+            background: #222;
+            color: white;
+            cursor: pointer;
+        }
+        footer {
+            background: #222;
+            color: white;
+            padding: 20px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <header>
         <img src="https://nextrade-black.vercel.app/Capture.PNG" alt="Banner">
-        
-        <h1>Maximize Your Trading Potential</h1>
-        <p>Trade smarter with our innovative mobile trading system.</p>
-        <h2>NexGold trades only GOLD.</h2>
-        <p>ONLY for $10/month</p>
+    </header>
+
+    <div class="container">
+
+        <div class="section">
+            <h1>Maximize Your Trading Potential</h1>
+            <p>Trade smarter with our innovative mobile trading system.</p>
+            <h2>NexGold trades only GOLD.</h2>
+            <p><strong>ONLY for $10/month</strong></p>
+        </div>
 
         <div class="section">
             <h2>How it Works?</h2>
-            <img src="https://nextrade-black.vercel.app/cr=w_365,h_365.webp" alt="How it Works">
+            <div class="image-container">
+                <img src="https://nextrade-black.vercel.app/cr=w_365,h_365.webp" alt="How it Works">
+            </div>
             <p>With our mobile portal, you will be able to link your account to our master account. 
                 It will NOT copy the trade but only initiate the trade on your MT5. 
                 You control settings, risk management, and On/OFF switch.</p>
@@ -65,7 +112,9 @@
 
         <div class="section">
             <h2>NexGold FREE</h2>
-            <img src="https://nextrade-black.vercel.app/rs=w_365,h_365,cg_true%20(1).webp" alt="NexGold Free">
+            <div class="image-container">
+                <img src="https://nextrade-black.vercel.app/rs=w_365,h_365,cg_true%20(1).webp" alt="NexGold Free">
+            </div>
             <p>You can have access to this high-quality product for free on mobile with these 2 requirements:</p>
             <ul>
                 <li>$10/month for your personalized Trading portal or free if you have a computer that runs 24/7</li>
@@ -76,38 +125,42 @@
 
         <div class="section">
             <h2>Get Started</h2>
-            <img src="https://nextrade-black.vercel.app/rs=w_365,h_365,cg_true%20(1).webp" alt="Get Started">
-            <p>1. Sign up with our broker <br> <strong>CLICK HERE</strong></p>
+            <div class="image-container">
+                <img src="https://nextrade-black.vercel.app/rs=w_365,h_365,cg_true%20(1).webp" alt="Get Started">
+            </div>
+            <p><strong>1. Sign up with our broker</strong></p>
+            <p>CLICK HERE</p>
             <p>If you already have an account with our broker, open a new MT5 and use this Partner Code to link: <strong>36358146</strong></p>
-            <p>2. Fill out the form below</p>
-            <p>3. Once approved, you will get a link to proceed to your portal setup.</p>
+            <p><strong>2. Fill out the form below</strong></p>
+            <p><strong>3. Once approved, you will get a link to proceed to your portal setup.</strong></p>
         </div>
 
         <div class="section">
             <h2>NEXGOLD REAL ACCOUNT RESULTS</h2>
-            <img src="//img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Trades.JPG/:/rs=w:1300,h:800" alt="Results">
-            <img src="//img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Capture.JPG/:/rs=w:1300,h:800" alt="Results">
-            <img src="//img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/ne1xgold.JPG/:/rs=w:1300,h:800" alt="Results">
-            <img src="//img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/info.JPG/:/rs=w:1300,h:800" alt="Results">
+            <div class="image-container">
+                <img src="//img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Trades.JPG/:/rs=w:1300,h:800" alt="Results">
+                <img src="//img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/Capture.JPG/:/rs=w:1300,h:800" alt="Results">
+                <img src="//img1.wsimg.com/isteam/ip/8e36b23f-0521-466d-88ff-ddb39b5dfc5f/ne1xgold.JPG/:/rs=w:1300,h:800" alt="Results">
+            </div>
         </div>
 
         <div class="section">
             <h2>Fill out this form to get your free bot</h2>
             <form>
-                <label>Name</label><br>
-                <input type="text" name="name" required><br><br>
+                <label>Name</label>
+                <input type="text" name="name" required>
 
-                <label>Phone Number*</label><br>
-                <input type="tel" name="phone" required><br><br>
+                <label>Phone Number*</label>
+                <input type="tel" name="phone" required>
 
-                <label>Email*</label><br>
-                <input type="email" name="email" required><br><br>
+                <label>Email*</label>
+                <input type="email" name="email" required>
 
-                <label>Please enter your affiliated FBS MT5 account number:</label><br>
-                <input type="text" name="mt5_account" required><br><br>
+                <label>Please enter your affiliated FBS MT5 account number:</label>
+                <input type="text" name="mt5_account" required>
 
-                <label>Please state Mobile or PC version</label><br>
-                <input type="text" name="version" required><br><br>
+                <label>Please state Mobile or PC version</label>
+                <input type="text" name="version" required>
 
                 <input type="submit" value="Send">
             </form>
@@ -131,9 +184,11 @@
             <p>Our customer support team is available 24/7 to help you with any questions or issues you may have.</p>
         </div>
 
-        <footer>
-            <p>Copyright © 2023 NexTrade - All Rights Reserved.</p>
-        </footer>
     </div>
+
+    <footer>
+        <p>Copyright © 2023 NexTrade - All Rights Reserved.</p>
+    </footer>
+
 </body>
 </html>
