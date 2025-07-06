@@ -1,17 +1,10 @@
-<!-- index.html --><!DOCTYPE html><html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Offline Notes PWA</title>
-  <link rel="manifest" href="manifest.json">
   <style>
-    :root {
-      --bg: #f2f2f2;
-      --surface: #ffffff;
-      --primary: #2563EA;
-      --text: #2C3E50;
-      --radius: 8px;
-    }
+    :root { --bg: #f2f2f2; --surface: #ffffff; --primary: #2563EA; --text: #2C3E50; --radius: 8px; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 20px; }
     h1 { color: var(--text); margin-bottom: 20px; }
@@ -29,27 +22,54 @@
     <button id="loadBtn">Load</button>
   </div>
   <script>
-    // Save note to localStorage
-    document.getElementById('saveBtn').addEventListener('click', () => {
-      const note = document.getElementById('noteInput').value;
-      localStorage.setItem('savedNote', note);
-      alert('Note saved!');
-    });
-    // Load note from localStorage
-    document.getElementById('loadBtn').addEventListener('click', () => {
-      const note = localStorage.getItem('savedNote') || '';
-      document.getElementById('noteInput').value = note;
-      alert('Note loaded!');
-    });
-    // Register service worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('SW registered'))
-        .catch(console.error);
-    }
+    // Dynamically inject manifest
+    const manifest = {
+      name: "Offline Notes PWA",
+      short_name: "Notes",
+      start_url: ".",
+      display: "standalone",
+      background_color: "#f2f2f2",
+      theme_color: "#2563EA"
+    };
+    const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const manifestURL = URL.createObjectURL(manifestBlob);
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = manifestURL;
+    document.head.appendChild(link);// Service Worker code as blob
+const swCode = `
+  const CACHE = 'offline-notes-v1';
+  const URLS = ['.'];
+  self.addEventListener('install', e => e.waitUntil(
+    caches.open(CACHE).then(c => c.addAll(URLS)).then(() => self.skipWaiting())
+  ));
+  self.addEventListener('activate', e => e.waitUntil(
+    caches.keys().then(keys => Promise.all(
+      keys.map(k => k !== CACHE ? caches.delete(k) : null)
+    ))).then(() => self.clients.claim())
+  );
+  self.addEventListener('fetch', e => {
+    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+  });
+`;
+const swBlob = new Blob([swCode], { type: 'application/javascript' });
+const swURL = URL.createObjectURL(swBlob);
+
+// Save/load logic
+document.getElementById('saveBtn').onclick = () => {
+  localStorage.setItem('savedNote', document.getElementById('noteInput').value);
+  alert('Note saved!');
+};
+document.getElementById('loadBtn').onclick = () => {
+  document.getElementById('noteInput').value = localStorage.getItem('savedNote') || '';
+  alert('Note loaded!');
+};
+
+// Register SW
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register(swURL).then(() => console.log('SW registered'));  
+}
+
   </script>
 </body>
-</html>// service-worker.js const CACHE_NAME = 'offline-notes-v1'; const OFFLINE_URLS = [ '/', 'index.html', 'manifest.json' ]; self.addEventListener('install', event => { event.waitUntil( caches.open(CACHE_NAME) .then(cache => cache.addAll(OFFLINE_URLS)) .then(self.skipWaiting()) ); }); self.addEventListener('activate', event => { event.waitUntil( caches.keys().then(keys => Promise.all( keys.map(key => { if (key !== CACHE_NAME) return caches.delete(key); }) )) ); self.clients.claim(); }); self.addEventListener('fetch', event => { event.respondWith( caches.match(event.request) .then(resp => resp || fetch(event.request)) ); });
-
-// manifest.json { "name": "Offline Notes PWA", "short_name": "Notes", "start_url": ".", "display": "standalone", "background_color": "#f2f2f2", "theme_color": "#2563EA", "icons": [ { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }, { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" } ] }
-
+</html>
