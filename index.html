@@ -1,100 +1,265 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Offline File Manager PWA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Offline File & Risk Manager</title>
   <style>
-    :root { --bg: #f2f2f2; --surface: #ffffff; --primary: #2563EA; --text: #2C3E50; --radius: 8px; }
+    :root {
+      --bg: #f2f2f2;
+      --surface: #ffffff;
+      --primary: #2563EA;
+      --danger: #E74C3C;
+      --text: #2C3E50;
+      --radius: 8px;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-    h1 { color: var(--text); margin-bottom: 20px; }
-    .uploader { background: var(--surface); padding: 15px; border-radius: var(--radius); width: 100%; max-width: 400px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    input[type=file] { display: block; margin-bottom: 10px; }
-    .files { margin-top: 10px; }
-    .file-item { display: flex; justify-content: space-between; align-items: center; background: #fafafa; padding: 8px; border-radius: var(--radius); margin-bottom: 8px; }
-    button { background: var(--primary); color: #fff; border: none; padding: 6px 12px; border-radius: var(--radius); cursor: pointer; }
-    button.delete { background: #E74C3C; }
+    body {
+      background: var(--bg);
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: var(--surface);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .section h2 {
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: var(--text);
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+    }
+    button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button.delete {
+      background: var(--danger);
+      margin-top: 0;
+    }
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fafafa;
+      padding: 8px;
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+    }
+    .list-item a {
+      color: var(--primary);
+      text-decoration: none;
+      flex: 1;
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body>
-  <h1>Offline File Manager</h1>
-  <div class="uploader">
+  <h1>Offline File & Risk Manager</h1>
+
+  <div class="container section" id="filesSection">
+    <h2>Files</h2>
     <input type="file" id="fileInput" multiple>
-    <div class="files" id="filesList"></div>
-  </div>  <script>
-    // IndexedDB helper
-    const DB_NAME = 'offline-files-db';
-    const STORE_NAME = 'files';
+    <div id="filesList"></div>
+  </div>
+
+  <div class="container section" id="riskSection">
+    <h2>Risk Assessments</h2>
+    <label for="raTitle">Title</label>
+    <input type="text" id="raTitle" placeholder="Assessment title">
+
+    <label for="raDesc">Description</label>
+    <textarea id="raDesc" rows="3" placeholder="Describe the risk..."></textarea>
+
+    <label for="raLevel">Risk Level</label>
+    <select id="raLevel">
+      <option>Low</option>
+      <option>Medium</option>
+      <option>High</option>
+    </select>
+
+    <button id="raAdd">Add Assessment</button>
+    <div id="raList"></div>
+  </div>
+
+  <script>
+    // IndexedDB setup
+    const DB = 'app-db', FSTORE = 'files', RSTORE = 'assessments';
     let db;
-    function openDB() {
-      return new Promise((res, rej) => {
-        const rq = indexedDB.open(DB_NAME, 1);
-        rq.onupgradeneeded = () => {
-          rq.result.createObjectStore(STORE_NAME, { keyPath: 'name' });
-        };
-        rq.onsuccess = () => res(rq.result);
-        rq.onerror = () => rej(rq.error);
-      });
-    }
-    async function addFile(file) {
-      const tx = db.transaction(STORE_NAME, 'readwrite');
-      const store = tx.objectStore(STORE_NAME);
-      return store.put({ name: file.name, data: file });
-    }
-    async function getAllFiles() {
-      const tx = db.transaction(STORE_NAME, 'readonly');
-      const store = tx.objectStore(STORE_NAME);
-      return store.getAll();
-    }
-    async function deleteFile(name) {
-      const tx = db.transaction(STORE_NAME, 'readwrite');
-      tx.objectStore(STORE_NAME).delete(name);
-      return tx.complete;
-    }
-    // UI
-    const fileInput = document.getElementById('fileInput');
-    const filesList = document.getElementById('filesList');
-    fileInput.addEventListener('change', async () => {
-      for (const file of fileInput.files) {
-        await addFile(file);
-      }
-      fileInput.value = '';
-      renderFiles();
+
+    const openDB = () => new Promise((res, rej) => {
+      const rq = indexedDB.open(DB, 1);
+      rq.onupgradeneeded = () => {
+        rq.result.createObjectStore(FSTORE, { keyPath: 'name' });
+        rq.result.createObjectStore(RSTORE, { autoIncrement: true });
+      };
+      rq.onerror = () => rej(rq.error);
+      rq.onsuccess = () => res(rq.result);
     });
+
+    // File operations
+    const addFile = file => new Promise(res => {
+      const tx = db.transaction(FSTORE, 'readwrite');
+      tx.objectStore(FSTORE).put({ name: file.name, data: file });
+      tx.oncomplete = res;
+    });
+    const getFiles = () => new Promise(res => {
+      const tx = db.transaction(FSTORE, 'readonly');
+      tx.objectStore(FSTORE).getAll().onsuccess = e => res(e.target.result);
+    });
+    const delFile = name => new Promise(res => {
+      const tx = db.transaction(FSTORE, 'readwrite');
+      tx.objectStore(FSTORE).delete(name);
+      tx.oncomplete = res;
+    });
+
+    // Risk assessment operations
+    const addRA = ra => new Promise(res => {
+      const tx = db.transaction(RSTORE, 'readwrite');
+      tx.objectStore(RSTORE).add(ra);
+      tx.oncomplete = res;
+    });
+    const getRAs = () => new Promise(res => {
+      const tx = db.transaction(RSTORE, 'readonly');
+      tx.objectStore(RSTORE).getAll().onsuccess = e => res(e.target.result);
+    });
+    const delRA = key => new Promise(res => {
+      const tx = db.transaction(RSTORE, 'readwrite');
+      tx.objectStore(RSTORE).delete(key);
+      tx.oncomplete = res;
+    });
+
+    // Render UI
     async function renderFiles() {
-      const all = await getAllFiles();
-      filesList.innerHTML = '';
-      all.forEach(item => {
+      const list = await getFiles();
+      const container = document.getElementById('filesList');
+      container.innerHTML = '';
+      list.forEach(f => {
         const div = document.createElement('div');
-        div.className = 'file-item';
-        const link = document.createElement('a');
-        link.textContent = item.name;
-        link.href = URL.createObjectURL(item.data);
-        link.download = item.name;
+        div.className = 'list-item';
+        const a = document.createElement('a');
+        a.textContent = f.name;
+        a.href = URL.createObjectURL(f.data);
+        a.download = f.name;
         const btn = document.createElement('button');
-        btn.textContent = 'Delete'; btn.className = 'delete';
-        btn.onclick = async () => { await deleteFile(item.name); renderFiles(); };
-        div.append(link, btn);
-        filesList.append(div);
+        btn.textContent = 'Delete';
+        btn.className = 'delete';
+        btn.onclick = async () => {
+          await delFile(f.name);
+          renderFiles();
+        };
+        div.append(a, btn);
+        container.append(div);
       });
     }
-    // Initialize DB + render
-    openDB().then(instance => { db = instance; renderFiles(); });
+
+    async function renderRAs() {
+      const list = await getRAs();
+      const container = document.getElementById('raList');
+      container.innerHTML = '';
+      list.forEach((ra, i) => {
+        const div = document.createElement('div');
+        div.className = 'list-item';
+        const span = document.createElement('span');
+        span.textContent = `${ra.title} (${ra.level}): ${ra.desc}`;
+        const btn = document.createElement('button');
+        btn.textContent = 'Delete';
+        btn.className = 'delete';
+        btn.onclick = async () => {
+          await delRA(i + 1);
+          renderRAs();
+        };
+        div.append(span, btn);
+        container.append(div);
+      });
+    }
+
+    // Initialize
+    openDB().then(instance => {
+      db = instance;
+      renderFiles();
+      renderRAs();
+    });
+
+    document.getElementById('fileInput').onchange = async e => {
+      for (const f of e.target.files) {
+        await addFile(f);
+      }
+      e.target.value = '';
+      renderFiles();
+    };
+
+    document.getElementById('raAdd').onclick = async () => {
+      const title = document.getElementById('raTitle').value;
+      const desc  = document.getElementById('raDesc').value;
+      const level = document.getElementById('raLevel').value;
+      if (title && desc) {
+        await addRA({ title, desc, level });
+        document.getElementById('raTitle').value = '';
+        document.getElementById('raDesc').value = '';
+        renderRAs();
+      }
+    };
 
     // Inject manifest
-    const manifest = { name:'Offline File Manager', short_name:'Files', start_url:'.', display:'standalone', background_color:'#f2f2f2', theme_color:'#2563EA' };
-    const mBlob = new Blob([JSON.stringify(manifest)], { type:'application/json' });
-    const mURL = URL.createObjectURL(mBlob);
-    Object.assign(document.createElement('link'),{rel:'manifest',href:mURL}).before();
+    const manifest = {
+      name: 'Offline App',
+      short_name: 'App',
+      start_url: '.',
+      display: 'standalone',
+      background_color: '#f2f2f2',
+      theme_color: '#2563EA'
+    };
+    const mBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const mURL  = URL.createObjectURL(mBlob);
+    const link = document.createElement('link');
+    link.rel  = 'manifest';
+    link.href = mURL;
+    document.head.appendChild(link);
 
-    // Service Worker as blob
+    // Inject and register Service Worker
     const swCode = `
-      const C='offline-files-v1'; const U=['.'];
-      self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(U)).then(()=>self.skipWaiting())));
-      self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(k=>k!==C?caches.delete(k):0))).then(()=>self.clients.claim())));
-      self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+      const CACHE = 'app-cache-v1';
+      const URLS  = ['.'];
+      self.addEventListener('install', e =>
+        e.waitUntil(caches.open(CACHE).then(c=>c.addAll(URLS)).then(()=>self.skipWaiting()))
+      );
+      self.addEventListener('activate', e =>
+        e.waitUntil(caches.keys().then(keys=>
+          Promise.all(keys.map(k=>k!==CACHE?caches.delete(k):0))
+        ).then(()=>self.clients.claim()))
+      );
+      self.addEventListener('fetch', e =>
+        e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))
+      );
     `;
-    const swBlob = new Blob([swCode],{type:'application/javascript'});
-    navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(console.error);
-  </script></body>
+    const swBlob = new Blob([swCode], { type: 'application/javascript' });
+    navigator.serviceWorker.register(URL.createObjectURL(swBlob))
+      .catch(console.error);
+  </script>
+</body>
 </html>
