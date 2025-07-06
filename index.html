@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Offline File & Risk Manager</title>
+  <meta name="theme-color" content="#2563EA">
   <style>
     :root {
       --bg: #f2f2f2;
-      --surface: #ffffff;
+      --surface: #fff;
       --primary: #2563EA;
       --danger: #E74C3C;
       --text: #2C3E50;
@@ -22,9 +23,16 @@
       align-items: center;
       padding: 20px;
     }
-    h1 {
-      color: var(--text);
+    h1 { color: var(--text); margin-bottom: 20px; }
+    .install-btn {
+      display: none;
       margin-bottom: 20px;
+      padding: 10px 20px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
     }
     .container {
       width: 100%;
@@ -35,15 +43,8 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin-bottom: 20px;
     }
-    .section h2 {
-      margin-bottom: 10px;
-      color: var(--text);
-    }
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      color: var(--text);
-    }
+    .container h2 { margin-bottom: 10px; color: var(--text); }
+    label { display: block; margin: 10px 0 5px; color: var(--text); }
     input, select, textarea, button {
       width: 100%;
       padding: 8px;
@@ -51,16 +52,8 @@
       border-radius: var(--radius);
       margin-bottom: 10px;
     }
-    button {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    button.delete {
-      background: var(--danger);
-      margin-top: 0;
-    }
+    button { background: var(--primary); color: #fff; border: none; cursor: pointer; }
+    button.delete { background: var(--danger); }
     .list-item {
       display: flex;
       justify-content: space-between;
@@ -70,24 +63,20 @@
       border-radius: var(--radius);
       margin-bottom: 8px;
     }
-    .list-item a {
-      color: var(--primary);
-      text-decoration: none;
-      flex: 1;
-      margin-right: 10px;
-    }
+    .list-item a { color: var(--primary); text-decoration: none; flex: 1; margin-right: 10px; }
   </style>
 </head>
 <body>
   <h1>Offline File & Risk Manager</h1>
+  <button id="installBtn" class="install-btn">Install App</button>
 
-  <div class="container section" id="filesSection">
+  <div class="container" id="filesSection">
     <h2>Files</h2>
     <input type="file" id="fileInput" multiple>
     <div id="filesList"></div>
   </div>
 
-  <div class="container section" id="riskSection">
+  <div class="container" id="riskSection">
     <h2>Risk Assessments</h2>
     <label for="raTitle">Title</label>
     <input type="text" id="raTitle" placeholder="Assessment title">
@@ -107,53 +96,80 @@
   </div>
 
   <script>
-    // IndexedDB setup
-    const DB = 'app-db', FSTORE = 'files', RSTORE = 'assessments';
+    // --- PWA install prompt ---
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'block';
+    });
+    installBtn.addEventListener('click', () => {
+      installBtn.style.display = 'none';
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.finally(() => deferredPrompt = null);
+    });
+
+    // --- IndexedDB setup ---
+    const DB_NAME = 'app-db', FILE_STORE = 'files', RA_STORE = 'assessments';
     let db;
+    function openDB() {
+      return new Promise((res, rej) => {
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = () => {
+          req.result.createObjectStore(FILE_STORE, { keyPath: 'name' });
+          req.result.createObjectStore(RA_STORE, { autoIncrement: true });
+        };
+        req.onerror = () => rej(req.error);
+        req.onsuccess = () => res(req.result);
+      });
+    }
 
-    const openDB = () => new Promise((res, rej) => {
-      const rq = indexedDB.open(DB, 1);
-      rq.onupgradeneeded = () => {
-        rq.result.createObjectStore(FSTORE, { keyPath: 'name' });
-        rq.result.createObjectStore(RSTORE, { autoIncrement: true });
-      };
-      rq.onerror = () => rej(rq.error);
-      rq.onsuccess = () => res(rq.result);
-    });
+    // --- File operations ---
+    function addFile(file) {
+      return new Promise(res => {
+        const tx = db.transaction(FILE_STORE, 'readwrite');
+        tx.objectStore(FILE_STORE).put({ name: file.name, data: file });
+        tx.oncomplete = res;
+      });
+    }
+    function getFiles() {
+      return new Promise(res => {
+        const tx = db.transaction(FILE_STORE, 'readonly');
+        tx.objectStore(FILE_STORE).getAll().onsuccess = e => res(e.target.result);
+      });
+    }
+    function deleteFile(name) {
+      return new Promise(res => {
+        const tx = db.transaction(FILE_STORE, 'readwrite');
+        tx.objectStore(FILE_STORE).delete(name);
+        tx.oncomplete = res;
+      });
+    }
 
-    // File operations
-    const addFile = file => new Promise(res => {
-      const tx = db.transaction(FSTORE, 'readwrite');
-      tx.objectStore(FSTORE).put({ name: file.name, data: file });
-      tx.oncomplete = res;
-    });
-    const getFiles = () => new Promise(res => {
-      const tx = db.transaction(FSTORE, 'readonly');
-      tx.objectStore(FSTORE).getAll().onsuccess = e => res(e.target.result);
-    });
-    const delFile = name => new Promise(res => {
-      const tx = db.transaction(FSTORE, 'readwrite');
-      tx.objectStore(FSTORE).delete(name);
-      tx.oncomplete = res;
-    });
+    // --- Risk assessment operations ---
+    function addRA(ra) {
+      return new Promise(res => {
+        const tx = db.transaction(RA_STORE, 'readwrite');
+        tx.objectStore(RA_STORE).add(ra);
+        tx.oncomplete = res;
+      });
+    }
+    function getRAs() {
+      return new Promise(res => {
+        const tx = db.transaction(RA_STORE, 'readonly');
+        tx.objectStore(RA_STORE).getAll().onsuccess = e => res(e.target.result);
+      });
+    }
+    function deleteRA(key) {
+      return new Promise(res => {
+        const tx = db.transaction(RA_STORE, 'readwrite');
+        tx.objectStore(RA_STORE).delete(key);
+        tx.oncomplete = res;
+      });
+    }
 
-    // Risk assessment operations
-    const addRA = ra => new Promise(res => {
-      const tx = db.transaction(RSTORE, 'readwrite');
-      tx.objectStore(RSTORE).add(ra);
-      tx.oncomplete = res;
-    });
-    const getRAs = () => new Promise(res => {
-      const tx = db.transaction(RSTORE, 'readonly');
-      tx.objectStore(RSTORE).getAll().onsuccess = e => res(e.target.result);
-    });
-    const delRA = key => new Promise(res => {
-      const tx = db.transaction(RSTORE, 'readwrite');
-      tx.objectStore(RSTORE).delete(key);
-      tx.oncomplete = res;
-    });
-
-    // Render UI
+    // --- Render functions ---
     async function renderFiles() {
       const list = await getFiles();
       const container = document.getElementById('filesList');
@@ -168,10 +184,7 @@
         const btn = document.createElement('button');
         btn.textContent = 'Delete';
         btn.className = 'delete';
-        btn.onclick = async () => {
-          await delFile(f.name);
-          renderFiles();
-        };
+        btn.onclick = async () => { await deleteFile(f.name); renderFiles(); };
         div.append(a, btn);
         container.append(div);
       });
@@ -181,7 +194,7 @@
       const list = await getRAs();
       const container = document.getElementById('raList');
       container.innerHTML = '';
-      list.forEach((ra, i) => {
+      list.forEach((ra, idx) => {
         const div = document.createElement('div');
         div.className = 'list-item';
         const span = document.createElement('span');
@@ -189,46 +202,43 @@
         const btn = document.createElement('button');
         btn.textContent = 'Delete';
         btn.className = 'delete';
-        btn.onclick = async () => {
-          await delRA(i + 1);
-          renderRAs();
-        };
+        btn.onclick = async () => { await deleteRA(idx + 1); renderRAs(); };
         div.append(span, btn);
         container.append(div);
       });
     }
 
-    // Initialize
+    // --- Initialize app ---
     openDB().then(instance => {
       db = instance;
       renderFiles();
       renderRAs();
+
+      document.getElementById('fileInput').onchange = async e => {
+        for (const f of e.target.files) {
+          await addFile(f);
+        }
+        e.target.value = '';
+        renderFiles();
+      };
+
+      document.getElementById('raAdd').onclick = async () => {
+        const title = document.getElementById('raTitle').value.trim();
+        const desc  = document.getElementById('raDesc').value.trim();
+        const level = document.getElementById('raLevel').value;
+        if (title && desc) {
+          await addRA({ title, desc, level });
+          document.getElementById('raTitle').value = '';
+          document.getElementById('raDesc').value = '';
+          renderRAs();
+        }
+      };
     });
 
-    document.getElementById('fileInput').onchange = async e => {
-      for (const f of e.target.files) {
-        await addFile(f);
-      }
-      e.target.value = '';
-      renderFiles();
-    };
-
-    document.getElementById('raAdd').onclick = async () => {
-      const title = document.getElementById('raTitle').value;
-      const desc  = document.getElementById('raDesc').value;
-      const level = document.getElementById('raLevel').value;
-      if (title && desc) {
-        await addRA({ title, desc, level });
-        document.getElementById('raTitle').value = '';
-        document.getElementById('raDesc').value = '';
-        renderRAs();
-      }
-    };
-
-    // Inject manifest
+    // --- PWA: manifest & service worker injection ---
     const manifest = {
-      name: 'Offline App',
-      short_name: 'App',
+      name: 'Offline File & Risk Manager',
+      short_name: 'Manager',
       start_url: '.',
       display: 'standalone',
       background_color: '#f2f2f2',
@@ -236,15 +246,14 @@
     };
     const mBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
     const mURL  = URL.createObjectURL(mBlob);
-    const link = document.createElement('link');
-    link.rel  = 'manifest';
-    link.href = mURL;
+    const link  = document.createElement('link');
+    link.rel    = 'manifest';
+    link.href   = mURL;
     document.head.appendChild(link);
 
-    // Inject and register Service Worker
     const swCode = `
       const CACHE = 'app-cache-v1';
-      const URLS  = ['.'];
+      const URLS  = [location.pathname];
       self.addEventListener('install', e =>
         e.waitUntil(caches.open(CACHE).then(c=>c.addAll(URLS)).then(()=>self.skipWaiting()))
       );
@@ -258,8 +267,10 @@
       );
     `;
     const swBlob = new Blob([swCode], { type: 'application/javascript' });
-    navigator.serviceWorker.register(URL.createObjectURL(swBlob))
-      .catch(console.error);
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register(URL.createObjectURL(swBlob))
+        .catch(console.error);
+    }
   </script>
 </body>
 </html>
